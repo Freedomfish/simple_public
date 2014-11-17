@@ -181,6 +181,7 @@ static void LoadDataFromDb(
         if (row[4]) info.passwd = row[4];
         if (row[5]) info.db = row[5];
 
+        info_util.infos.insert(info);
         for (int j=start_index; j<=end_index; ++j)
         {
             if (0 == r_w)
