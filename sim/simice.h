@@ -65,7 +65,9 @@ inline void InitSetProperty(Ice::InitializationData& data, IceClientObject& obj,
 class IceClientCommon
 {
 public:
+    IceClientCommon(){}
     IceClientCommon(Ice::CommunicatorPtr& commu):communicator(commu){}
+    void set_communicator(Ice::CommunicatorPtr& commu){communicator = commu;}
     template<typename Prx> 
     int GetPrx(Prx &prx, const std::string& objid, const std::string& regquery, 
         const std::string& objtype)
