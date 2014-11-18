@@ -25,4 +25,21 @@ inline std::string NewUuid()
 #define SharedPtr std::shared_ptr
 typedef boost::mutex Mutex;
 typedef boost::unique_lock<Mutex> ScopeLock;
+
+template<class T>
+class SimNoLock
+{
+public:
+    SimNoLock():ix_(0){}
+ 
+    virtual void Update()
+    {
+        int i = ix_ ^ 1;
+        ix_ = i;
+    }
+protected:
+    T t_[2];
+    int ix_;
+};
+
 #endif
