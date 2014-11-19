@@ -67,7 +67,7 @@ class IceClientCommon
 public:
     IceClientCommon(){}
     IceClientCommon(Ice::CommunicatorPtr& commu):communicator(commu){}
-    void set_communicator(Ice::CommunicatorPtr& commu){communicator = commu;}
+    void set_communicator(Ice::CommunicatorPtr commu){communicator = commu;}
     template<typename Prx> 
     int GetPrx(Prx &prx, const std::string& objid, const std::string& regquery, 
         const std::string& objtype)
@@ -148,7 +148,7 @@ public:
     }
 
 private:
-    Ice::CommunicatorPtr& communicator;
+    Ice::CommunicatorPtr communicator;
 };
 
 }
