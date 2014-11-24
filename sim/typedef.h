@@ -13,6 +13,8 @@
 #include <memory>
 #include <sstream>
 
+namespace sim {
+
 inline std::string NewUuid()
 {
     boost::uuids::uuid uuid = boost::uuids::random_generator()();
@@ -25,6 +27,10 @@ inline std::string NewUuid()
 #define SharedPtr std::shared_ptr
 typedef boost::mutex Mutex;
 typedef boost::unique_lock<Mutex> ScopeLock;
+
+typedef boost::shared_mutex            SharedMutex;  
+typedef boost::unique_lock<SharedMutex>   WriteLock;  
+typedef boost::shared_lock<SharedMutex>   ReadLock;
 
 template<class T>
 class SimNoLock
@@ -41,5 +47,7 @@ protected:
     T t_[2];
     int ix_;
 };
+
+}
 
 #endif
