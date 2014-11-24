@@ -1,6 +1,0 @@
-[http-server]
-host=127.0.0.1:8003
-uri_pass=/interface
-reply_time_out=3
-[so]
-path=httpso
