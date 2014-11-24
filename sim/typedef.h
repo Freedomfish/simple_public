@@ -4,7 +4,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/thread/locks.hpp>
 #include <boost/thread/mutex.hpp>
-
+#include <boost/thread/shared_mutex.hpp>
 
 #include <boost/uuid/uuid.hpp>            // uuid class
 #include <boost/uuid/uuid_generators.hpp> // generators
@@ -12,6 +12,8 @@
 
 #include <memory>
 #include <sstream>
+
+#define SharedPtr std::shared_ptr
 
 namespace sim {
 
@@ -24,7 +26,6 @@ inline std::string NewUuid()
 }
 
 //#define SharedPtr boost::shared_ptr
-#define SharedPtr std::shared_ptr
 typedef boost::mutex Mutex;
 typedef boost::unique_lock<Mutex> ScopeLock;
 
