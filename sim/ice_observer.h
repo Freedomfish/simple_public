@@ -5,6 +5,9 @@
 #include <Ice/Ice.h>
 #include <IceStorm/IceStorm.h>
 
+namespace sim
+{
+
 template <typename T>
 class Observer
 {
@@ -170,5 +173,6 @@ T Observer<T>::publish_prx()
     return publish_prx_;
 }
 
+}
 
 #endif

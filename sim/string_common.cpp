@@ -24,6 +24,7 @@ std::string StrReplace(const std::string& s,
     size_t count)
 {
     string dest;
+    dest.reserve(s.length());
     size_t start_pos = 0;
     size_t end_pos = 0;
     size_t str_len = str.length();
@@ -32,11 +33,13 @@ std::string StrReplace(const std::string& s,
     {
         end_pos = s.find(str, start_pos);
         if (end_pos == string::npos) break;
-        dest += s.substr(start_pos, end_pos - start_pos) + dst;
+        cout<<"start_pos="<<start_pos<<"end_pos="<<end_pos<<endl;
+        dest.append(s, start_pos, end_pos - start_pos);
+        dest.append(dst);
         start_pos = end_pos + str_len;
         cout<<"i="<<i<<endl;
     }
-    dest += s.substr(start_pos);
+    dest.append(s, start_pos, str.length()-start_pos);
     return dest;
 }
 

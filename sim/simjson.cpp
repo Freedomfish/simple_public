@@ -29,17 +29,19 @@ SimJson::SimJson(SimJsonNodeType t):m_type(t)
 	else m_str="";
 }
 
-SimJson::SimJson(const std::string& key, const std::string& value)
+SimJson::SimJson(const std::string& key, const std::string& value, bool is_transed = true)
 {
+        string v = value;
+        if (!is_transed) v=StrReplace(value, "\"", "\\\"");
 	if (!key.empty())
 	{
 	    m_type = SIMJSON_EMPTY;
-	    m_str = "\"" + key + "\":\"" + value + "\"";
+	    m_str = "\"" + key + "\":\"" + v + "\"";
 	}
 	else
 	{
 		m_type = SIMJSON_NODE;
-		m_str = "\"" + value + "\"";
+		m_str = "\"" + v + "\"";
 	}
 }
 
@@ -97,6 +99,7 @@ int SimJson::push_back(const SimJson& sj)
 	return 0;
 }
 
+}
 
 std::string& SimJson::AddNode(std::string& node, const std::string& str)
 {
