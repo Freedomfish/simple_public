@@ -40,6 +40,11 @@ public:
     template<typename T>
     int push_back(const std::string& key, const T& val, bool is_transed = true)    
     {
+        return push_back(SimJson(key, val));
+    }
+    template<>
+    int push_back(const std::string& key, const std::string& val, bool is_transed = true)
+    {
         return push_back(SimJson(key, val, is_transed));
     }
     int push_back(const SimJson& sj);
