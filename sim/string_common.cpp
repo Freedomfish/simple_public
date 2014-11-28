@@ -39,7 +39,7 @@ std::string StrReplace(const std::string& s,
         start_pos = end_pos + str_len;
         cout<<"i="<<i<<endl;
     }
-    dest.append(s, start_pos, str.length()-start_pos);
+    dest.append(s, start_pos, s.length()-start_pos);
     return dest;
 }
 
