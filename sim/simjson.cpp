@@ -1,5 +1,6 @@
 #include "simjson.h"
 #include "simexception.h"
+#include "string_common.h"
 using namespace std;
 namespace sim {
 SimJson SimJson::New(const std::string& str, const int _errcode)
@@ -29,7 +30,7 @@ SimJson::SimJson(SimJsonNodeType t):m_type(t)
 	else m_str="";
 }
 
-SimJson::SimJson(const std::string& key, const std::string& value, bool is_transed = true)
+SimJson::SimJson(const std::string& key, const std::string& value, bool is_transed)
 {
         string v = value;
         if (!is_transed) v=StrReplace(value, "\"", "\\\"");
@@ -99,7 +100,6 @@ int SimJson::push_back(const SimJson& sj)
 	return 0;
 }
 
-}
 
 std::string& SimJson::AddNode(std::string& node, const std::string& str)
 {
