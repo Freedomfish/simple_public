@@ -7,11 +7,11 @@ using namespace std;
 
 namespace sim {
 
-int SoLoad::FuncLoad(const char* sofile, 
+int SoLoad::FuncLoad(const std::string& sofile, 
         const std::vector<std::string>& symbols,
         std::map<std::string, std::vector<void*>>& sofuncs)
 {
-    void* handle = dlopen(sofile, RTLD_NOW);
+    void* handle = dlopen(sofile.c_str(), RTLD_NOW);
     if (!handle)
     {
         errcode_ = errno;
@@ -37,12 +37,12 @@ int SoLoad::FuncLoad(const char* sofile,
     return 0;
 }
 
-int SoLoad::FuncLoadFromPath(const char* path, 
+int SoLoad::FuncLoadFromPath(const std::string& path, 
         const std::vector<std::string>& symbols,
         std::map<std::string, std::vector<void*>>& sofuncs)
 {
         struct dirent       **namelist;
-        int n = scandir(path, &namelist, NULL, alphasort);
+        int n = scandir(path.c_str(), &namelist, NULL, alphasort);
     if (n < 0)
     {
         errcode_ = errno;
