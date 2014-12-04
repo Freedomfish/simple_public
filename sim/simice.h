@@ -62,6 +62,27 @@ inline void InitSetProperty(Ice::InitializationData& data, IceClientObject& obj,
     data.properties->setProperty(objpty.regquery, obj.regquery);
 }
 
+inline void IceObjptyInitFromIceObj(const std::string& sess, 
+        IceClientObject& obj, 
+        IceClientObjectProperty& objpty)
+{
+    objpty.objid = sess + "_objid";
+    objpty.objtype = sess + "_objtype";
+    objpty.regquery = sess + "_regquery";
+    objpty.locator = objpty.objid + "." + "Locator";
+}
+
+
+
+inline void InitSetProperty(Ice::PropertiesPtr& properties, IceClientObject& obj, IceClientObjectProperty& objpty)
+{
+    properties->setProperty(objpty.locator, obj.locator);
+    properties->setProperty(objpty.objid, obj.objid);
+    properties->setProperty(objpty.objtype, obj.objtype);
+    properties->setProperty(objpty.regquery, obj.regquery);
+}
+
+
 class IceClientCommon
 {
 public:

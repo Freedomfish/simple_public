@@ -2,7 +2,7 @@
 #define SIM_CLASS_FUNC_H
 #include <map>
 
-template<class K, class C>
+template<typename K, class C>
 class ClassFunc
 {
 public:
