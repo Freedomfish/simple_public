@@ -1,6 +1,8 @@
 #include "mysql_route.h"
 #include <iostream>
 #include <sim/log4cplus_common.h>
+#include <sim/simroute.h>
+#include <sim/simroute_pool.h>
 using namespace std;
 using namespace sim;
 
@@ -40,19 +42,14 @@ void MysqlRoute::InitData(MysqlInfoManager* infos)
     }
 }
 
-typedef RouteHandler<SimSql> MysqlRouteHandler;
-
-MysqlObj MysqlRoute::get(const int index,
-    const std::string& db_key, const int r_w)
+MysqlObj MysqlRoute::get(int index,
+    const std::string& db_key, int r_w)
 {
-    MysqlObj obj;
-    int rw = r_w;
-    if (rw >0) rw-=1;
     map<string, SharedPtr<MysqlBase> >::iterator it;
-    it = routes_[rw].find(db_key);
-    if (it != routes_[rw].end()) 
-        obj.set_handler(it->second->get(index));
-    return obj;
+    it = routes_[r_w].find(db_key);
+    if (it != routes_[r_w].end()) 
+        return it->second->get(index);
+    return MysqlObj();
 }
 
 void MysqlRoute::Start(MysqlInfoManager *pinfo)
@@ -72,12 +69,14 @@ void MysqlRoute::Start(MysqlInfoManager *pinfo)
         MysqlInfoSetMap::iterator it;
         for (size_t i=0; i<2; ++i)
         {
-            SharedPtr<MysqlBase> ptr(new MysqlBase);
+            SharedPtr<MysqlBase> ptr;
+            if (!is_pool_) ptr.reset(new SimRoute<int, SimSql>());
+            else ptr.reset(new SimRoutePool<int, SimSql>());
             routes_[i][mit->first] = ptr;
             for (it=mit->second[i].begin(); it!=mit->second[i].end(); ++it)
             {
                 for (sit=it->second.begin(); sit!=it->second.end(); ++sit)
-                ptr->AddObj(it->first, sql_map[*sit]);
+                ptr->AddObj(it->first, sql_map[*sit], copy_num_);
             }
         }
     }
@@ -197,5 +196,4 @@ static void LoadDataFromDb(
     }
     //InitData(infos);
 } 
-
 

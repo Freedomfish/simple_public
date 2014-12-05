@@ -33,21 +33,24 @@ private:
     MysqlInfoUtil info_util_;
 };
 
-typedef RouteBase<int,SimSql> MysqlBase;
+typedef AbstractRoute<int,SimSql> MysqlBase;
 
 class MysqlRoute : public MysqlRouteBase
 {
 public:
-    MysqlRoute():is_started_(false){}
+    MysqlRoute(bool is_pool=false, int copy_num=1)
+        :is_started_(false), is_pool_(is_pool), copy_num_(copy_num){}
     virtual ~MysqlRoute(){}
-    virtual MysqlObj get(const int index=0, 
+    virtual MysqlObj get(int index=0, 
         const std::string& db_key="",
-        const int r_w=1);
+        int r_w=WRITE);
     void InitData(MysqlInfoManager* infos);
 private:
     void Start(MysqlInfoManager*);
 private:
     bool is_started_;
+    bool is_pool_;
+    int copy_num_;
     std::map<std::string, SharedPtr<MysqlBase> > routes_[2];//0-r 1-w
 };
 

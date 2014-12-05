@@ -10,71 +10,71 @@ namespace sim {
 class SplitDbTableRule
 {
 public:
-    virtual int Index(const int i, const int type_i = 0) const
+    virtual int Index(int i, int type_i = 0) const
     {
         return 0;
     }
-    virtual int DbIndexMax(const int type_i = 0) const
+    virtual int DbIndexMax(int type_i = 0) const
     {
         return 0;
     }
-    virtual int TableIndexMax(const int type_i = 0) const
+    virtual int TableIndexMax(int type_i = 0) const
     {
         return 0;
     }
-    virtual std::string DbName(const int i,
-        const int type_i=0) const
+    virtual std::string DbName(int i,
+        int type_i=0) const
     {
         return "";
     }
-    virtual std::string TableName(const int i,
-        const int type_i=0) const
+    virtual std::string TableName(int i,
+        int type_i=0) const
     {
         return "";
     }
-    virtual std::string DbNamePrefix(const int type_i) const
+    virtual std::string DbNamePrefix(int type_i) const
     {
         return "";
     }
-    virtual std::string TableNamePrefix(const int type_i) const
+    virtual std::string TableNamePrefix(int type_i) const
     {
         return "";
     }
 
     // 年库
-    int IndexYear(const int year) const
+    int IndexYear(int year) const
     {
         return year;
     }
-    std::string DbNameYear(const int year, const std::string &prefix) const
+    std::string DbNameYear(int year, const std::string &prefix) const
     {
         return (prefix + atostr(year));
     }
 
     // 100库100表
-    int IndexHundred(const int i) const
+    int IndexHundred(int i) const
     {
         return i/100%100;
     }
-    std::string DbNameHundred(const int i, const std::string &prefix) const
+    std::string DbNameHundred(int i, const std::string &prefix) const
     {
         return (prefix + atostr(i/100%100));
     }
-    std::string TableNameHundred(const int i, const std::string &prefix) const
+    std::string TableNameHundred(int i, const std::string &prefix) const
     {
         return (prefix + atostr(i%100));
     }
 
     // 10库10表
-    int IndexTen(const int i) const
+    int IndexTen(int i) const
     {
         return i/10%10;
     }
-    std::string DbNameTen(const int i, const std::string &prefix) const
+    std::string DbNameTen(int i, const std::string &prefix) const
     {
         return (prefix + atostr(i/10%10));
     }
-    std::string TableNameTen(const int i, const std::string &prefix) const
+    std::string TableNameTen(int i, const std::string &prefix) const
     {
         return (prefix + atostr(i%10));
     }
@@ -84,11 +84,14 @@ template<class T>
 class MysqlRouteCommon
 {
 public:
-    static void Init(SplitDbTableRule* h, MysqlRouteBaseFactory *f)
+    static void Init(SplitDbTableRule* h, MysqlRouteBaseFactory *f,
+                     bool is_pool=false, int copy_num=1)
     {
         baseh_.reset(h);
         factory_.reset(f);
         info_manager_.reset(f->NewInfoManager());
+        is_pool_=is_pool;
+        copy_num_=copy_num;
     }
     static void InitData(SimIni& ini, const std::vector<std::string>& db_types)
     {
@@ -121,6 +124,8 @@ protected:
     static SharedPtr<SplitDbTableRule> baseh_;
     static SharedPtr<MysqlRouteBaseFactory> factory_;
     static SharedPtr<MysqlInfoManager> info_manager_;
+    static bool is_pool_;
+    static int copy_num_;
 };
 
 template<class T>
@@ -129,6 +134,10 @@ template<class T>
 SharedPtr<MysqlRouteBaseFactory> MysqlRouteCommon<T>::factory_ = NULL;
 template<class T>
 SharedPtr<MysqlInfoManager> MysqlRouteCommon<T>::info_manager_ = NULL;
+template<class T>
+bool MysqlRouteCommon<T>::is_pool_=false;
+template<class T>
+int MysqlRouteCommon<T>::copy_num_=1;
 
 }
 #endif

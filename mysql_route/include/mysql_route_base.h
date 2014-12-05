@@ -28,9 +28,9 @@ class MysqlRouteBase
 {
 public:
     virtual ~MysqlRouteBase(){}
-    virtual MysqlObj get(const int index=0,
+    virtual MysqlObj get(int index=0,
         const std::string& db_type="",
-        const int r_w=1) = 0;
+        int r_w=1) = 0;
     virtual void InitData(MysqlInfoManager*)=0;
 };
 

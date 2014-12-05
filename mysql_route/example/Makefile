@@ -8,7 +8,7 @@ CFLAGS       = -fPIC -Wall
 CPPFLAGS     = -fPIC -g -O0 -Wall -std=c++11 $(INC_PATH)
 DEBUGFLAGS   = -g -O0 -D_DEBUG -DDEBUG
 RELEASEFLAGS = -O2 -DNDEBUG
-LDFLAGS      = -lsqlite3 -llog4cplus -L/usr/lib64/mysql -lmysqlclient -lboost_system
+LDFLAGS      = -L/usr/local/mariadb/lib/ -llog4cplus -lmysqlclient -lboost_system
 
 TARGET  = demo
 SOURCES = $(shell echo *.cpp $(ADD_SRC))

@@ -108,7 +108,10 @@ int main(void)
     {
         MysqlRouteBaseFactory *factory = new MysqlRouteFactory;
         SplitDbTableRule* ruleh = new TestSplitRule;
-        TestMysql::Init(ruleh, factory);
+        //线程私有方式
+        //TestMysql::Init(ruleh, factory);
+        //线程池方式
+        TestMysql::Init(ruleh, factory, true, 16);
         TestMysql::InitData(ini, types);
     }
     catch (const SimException& e)
