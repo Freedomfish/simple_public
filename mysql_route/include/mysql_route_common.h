@@ -84,6 +84,7 @@ template<class T>
 class MysqlRouteCommon
 {
 public:
+    //is_pool表示是否实用连接池，copy_num是每个对象的副本数量(实用线程池时建议>=线程数)
     static void Init(SplitDbTableRule* h, MysqlRouteBaseFactory *f,
                      bool is_pool=false, int copy_num=1)
     {
