@@ -45,8 +45,8 @@ inline T SimLockPool<T>::get(void)
 {
     ScopeLock lock_(m_mtx);
     if (pool_.empty()) return (T)0;
-    T t1 = pool_.front();
-    pool_.pop_front();
+    T t1 = pool_.back();
+    pool_.pop_back();
     return t1;
 }
 template<typename T>
