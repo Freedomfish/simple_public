@@ -18,6 +18,7 @@ template<class T>
 class SimConnObjStore : public AbstractObjStore<T>
 {
 public:
+    SimConnObjStore():status_(0){}
     void AddObj(SharedPtr<T> obj){pools_.push_back(obj);}
     SharedPtr<T> get(){return pools_.get();}
     int status(){return status_;}
@@ -32,6 +33,7 @@ template<class T>
 class SimConnPoolObjStore : public AbstractObjStore<T>
 {
 public:
+    SimConnPoolObjStore():status_(0){}
     void AddObj(SharedPtr<T> obj){pools_.push_back(obj);}
     SharedPtr<T> get(){return pools_.get();}
     int status(){return status_;}

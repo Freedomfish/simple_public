@@ -1,6 +1,5 @@
 #include "mysql_route.h"
 #include <iostream>
-#include <sim/log4cplus_common.h>
 #include <sim/simroute.h>
 using namespace std;
 using namespace sim;
@@ -45,8 +44,8 @@ MysqlObj MysqlRoute::get(int index,
     const std::string& db_key, int r_w)
 {
     map<string, SharedPtr<MysqlBase> >::iterator it;
-    it = routes_[r_w].find(db_key);
-    if (it != routes_[r_w].end()) 
+    it = routes_[r_w-1].find(db_key);
+    if (it != routes_[r_w-1].end()) 
         return it->second->get(index);
     return MysqlObj();
 }
