@@ -15,10 +15,10 @@ namespace sim {
 
 //一个主机一个对象，status标记主机状态
 template<class T>
-class SimConnObjStore : public AbstractObjStore<T>
+class SimConnObjMaster : public AbstractObjMaster<T>
 {
 public:
-    SimConnObjStore():status_(0){}
+    SimConnObjMaster():status_(0){}
     void AddObj(SharedPtr<T> obj){pools_.push_back(obj);}
     SharedPtr<T> get(){return pools_.get();}
     int status(){return status_;}
@@ -30,10 +30,10 @@ private:
 
 //一个主机一个对象，status标记主机状态
 template<class T>
-class SimConnPoolObjStore : public AbstractObjStore<T>
+class SimConnPoolObjMaster : public AbstractObjMaster<T>
 {
 public:
-    SimConnPoolObjStore():status_(0){}
+    SimConnPoolObjMaster():status_(0){}
     void AddObj(SharedPtr<T> obj){pools_.push_back(obj);}
     SharedPtr<T> get(){return pools_.get();}
     int status(){return status_;}
@@ -47,10 +47,11 @@ template<class T>
 class SimRouteHandler : public AbstractRouteHandler<T>
 {
 public:
-    SimRouteHandler(AbstractObjStore<T>* p)
+    SimRouteHandler(AbstractObjMaster<T>* p)
         :pool_(p), obj_(p->get()){}
     ~SimRouteHandler(){if (obj_) pool_->AddObj(obj_);}
-    T* handler()
+    AbstractObjMaster<T>* master(){return pool_;}
+    T* obj()
     {
         return obj_.get();
     }
@@ -61,7 +62,7 @@ public:
     int status(){return pool_->status();}
     void set_status(int s){pool_->set_status(s);}
 private:
-    AbstractObjStore<T>* pool_;
+    AbstractObjMaster<T>* pool_;
     SharedPtr<T> obj_;
 };
 
@@ -69,14 +70,14 @@ template<class KEY, class OBJ>
 class SimRoute : public AbstractRoute<KEY, OBJ>
 {
 public:
-    void AddObj(const KEY& key, SharedPtr<AbstractObjStore<OBJ>> objs);
+    void AddMaster(const KEY& key, SharedPtr<AbstractObjMaster<OBJ>> objs);
     RouteObj<OBJ> get(const KEY& k);
 private:
-    std::map<KEY, std::vector<SharedPtr<AbstractObjStore<OBJ>>>> pools_; 
+    std::map<KEY, std::vector<SharedPtr<AbstractObjMaster<OBJ>>>> pools_; 
 };
 
 template<class KEY, class OBJ>
-void SimRoute<KEY, OBJ>::AddObj(const KEY& k, SharedPtr<AbstractObjStore<OBJ>> obj)
+void SimRoute<KEY, OBJ>::AddMaster(const KEY& k, SharedPtr<AbstractObjMaster<OBJ>> obj)
 {
     pools_[k].push_back(obj);
 };
@@ -86,12 +87,12 @@ RouteObj<OBJ> SimRoute<KEY, OBJ>::get(const KEY& k)
 {
     RouteObj<OBJ> o;
     typename std::map<KEY, 
-         std::vector<SharedPtr<AbstractObjStore<OBJ>>>
+         std::vector<SharedPtr<AbstractObjMaster<OBJ>>>
          >::iterator it;
     it = pools_.find(k);
     if (it != pools_.end())
     {
-        typename std::vector<SharedPtr<AbstractObjStore<OBJ>>>::iterator vit;
+        typename std::vector<SharedPtr<AbstractObjMaster<OBJ>>>::iterator vit;
         for (vit=it->second.begin(); vit!=it->second.end(); ++vit)
         {
             if (!(*vit)->status())
