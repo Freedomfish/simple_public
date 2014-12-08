@@ -33,12 +33,13 @@ private:
     RedisInfoUtil info_util_;
 };
 
-typedef RouteBase<int,SimRedis> RedisBase;
+typedef AbstractRoute<int,SimRedis> RedisBase;
 
 class RedisRoute : public RedisRouteBase
 {
 public:
-    RedisRoute():is_started_(false){}
+    RedisRoute(bool is_pool=false, int copy_num=1)
+        :is_started_(false),is_pool_(is_pool), copy_num_(copy_num){}
     virtual ~RedisRoute(){}
     virtual RedisObj get(const int index=0, 
         const std::string& key="");
@@ -47,6 +48,8 @@ private:
     void Start(RedisInfoManager*);
 private:
     bool is_started_;
+    bool is_pool_;
+    int copy_num_;
     std::map<std::string, SharedPtr<RedisBase> > routes_;//0-r 1-w
 };
 

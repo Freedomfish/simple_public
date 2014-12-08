@@ -1,6 +1,6 @@
 #include "redis_route.h"
 #include <iostream>
-#include <sim/log4cplus_common.h>
+#include <sim/simroute.h>
 using namespace std;
 using namespace sim;
 
@@ -43,32 +43,33 @@ void RedisRoute::InitData(RedisInfoManager* infos)
 RedisObj RedisRoute::get(const int index,
     const std::string& key)
 {
-    RedisObj obj;
     map<string, SharedPtr<RedisBase> >::iterator it;
     it = routes_.find(key);
-    if (it != routes_.end())
-        obj.set_handler(it->second->get(index));
-    return obj;
+    if (it != routes_.end()) return it->second->get(index);
+    return RedisObj();
 }
 
 void RedisRoute::Start(RedisInfoManager *pinfo)
 {
     RedisInfoUtil* infos = (RedisInfoUtil*)pinfo->Infos();
     RedisInfoSet::iterator sit;
-    std::map<RedisInfo, SharedPtr<SimRedis> > obj_map;
+    std::map<RedisInfo, SharedPtr<AbstractObjStore<SimRedis>>> obj_map;
     //根据info生成对象
     for (sit=infos->infos.begin(); sit!=infos->infos.end(); ++sit)
     {
-        LOG_APP_DEBUG("host=%s", sit->host.c_str());
-        obj_map[*sit] = SharedPtr<SimRedis>(new SimRedis(*sit));
+        SharedPtr<AbstractObjStore<SimRedis>> os;
+        if (!is_pool_) os.reset(new SimConnObjStore<SimRedis>);
+        else os.reset(new SimConnPoolObjStore<SimRedis>);
+        obj_map[*sit] = os;
+        for (int i=0; i<copy_num_; ++i)
+            os->AddObj(SharedPtr<SimRedis>(new SimRedis(*sit)));
     }
     //根据type和index建立对象关联
     map<string, RedisInfoSetMap>::iterator mit;
     for (mit=infos->type_infos.begin(); mit!=infos->type_infos.end(); ++mit)
     {
-        SharedPtr<RedisBase> ptr(new RedisBase);
+        SharedPtr<RedisBase> ptr(new SimRoute<int, SimRedis>);
         routes_[mit->first] = ptr;
-        LOG_APP_DEBUG("type=%s", mit->first.c_str());
         RedisInfoSetMap::iterator it;
         for (it=mit->second.begin(); it!=mit->second.end(); ++it)
         {
