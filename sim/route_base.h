@@ -32,11 +32,22 @@ private:
     SharedPtr<AbstractRouteHandler<T> > handler_;
 };
 
+//以主机为单位的连接对象集合
+template<class T>
+class AbstractObjStore
+{
+public:
+    virtual void AddObj(SharedPtr<T> obj) = 0;
+    virtual SharedPtr<T> get() = 0;
+    virtual int status()=0;
+    virtual void set_status(int s)=0;
+};
+
 template<class KEY, class OBJ>
 class AbstractRoute
 {
 public:
-    virtual void AddObj(const KEY& key, SharedPtr<OBJ> obj, int copy_num=1) = 0;
+    virtual void AddObj(const KEY& key, SharedPtr<AbstractObjStore<OBJ>> objs) = 0;
     virtual RouteObj<OBJ> get(const KEY& k) = 0;
 };
 

@@ -2,7 +2,6 @@
 #include <iostream>
 #include <sim/log4cplus_common.h>
 #include <sim/simroute.h>
-#include <sim/simroute_pool.h>
 using namespace std;
 using namespace sim;
 
@@ -56,11 +55,17 @@ void MysqlRoute::Start(MysqlInfoManager *pinfo)
 {
     MysqlInfoUtil* infos = (MysqlInfoUtil*)pinfo->Infos();
     MysqlInfoSet::iterator sit;
-    std::map<MysqlInfo, SharedPtr<SimSql> > sql_map;
+    std::map<MysqlInfo, SharedPtr<AbstractObjStore<SimSql>>> obj_map;
     //根据info生成对象
     for (sit=infos->infos.begin(); sit!=infos->infos.end(); ++sit)
     {
-        sql_map[*sit] = SharedPtr<SimSql>(new SimSql(*sit));
+        SharedPtr<AbstractObjStore<SimSql>> os;
+        if (!is_pool_) os.reset(new SimConnObjStore<SimSql>);
+        else os.reset(new SimConnPoolObjStore<SimSql>);
+        obj_map[*sit] = os;
+
+        for (int i=0; i<copy_num_; ++i)
+            os->AddObj(SharedPtr<SimSql>(new SimSql(*sit)));
     }
     //根据type和index建立对象关联
     map<string, MysqlInfoSetMap[2]>::iterator mit;
@@ -69,14 +74,12 @@ void MysqlRoute::Start(MysqlInfoManager *pinfo)
         MysqlInfoSetMap::iterator it;
         for (size_t i=0; i<2; ++i)
         {
-            SharedPtr<MysqlBase> ptr;
-            if (!is_pool_) ptr.reset(new SimRoute<int, SimSql>());
-            else ptr.reset(new SimRoutePool<int, SimSql>());
+            SharedPtr<MysqlBase> ptr(new SimRoute<int, SimSql>);
             routes_[i][mit->first] = ptr;
             for (it=mit->second[i].begin(); it!=mit->second[i].end(); ++it)
             {
                 for (sit=it->second.begin(); sit!=it->second.end(); ++sit)
-                ptr->AddObj(it->first, sql_map[*sit], copy_num_);
+                    ptr->AddObj(it->first, obj_map[*sit]);
             }
         }
     }

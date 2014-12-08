@@ -38,6 +38,7 @@ typedef AbstractRoute<int,SimSql> MysqlBase;
 class MysqlRoute : public MysqlRouteBase
 {
 public:
+    //is_pool标记是否使用连接池
     MysqlRoute(bool is_pool=false, int copy_num=1)
         :is_started_(false), is_pool_(is_pool), copy_num_(copy_num){}
     virtual ~MysqlRoute(){}
