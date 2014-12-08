@@ -28,6 +28,8 @@ public:
     T* operator -> (){return handler_->handler();}
     SharedPtr<T> get (){return handler_->get();}
     operator const bool () {return handler_!=NULL && handler_->handler()!=NULL;}
+    int status(){return handler_->status();}
+    void set_status(int s){handler_->set_status(s);}
 private:
     SharedPtr<AbstractRouteHandler<T> > handler_;
 };
