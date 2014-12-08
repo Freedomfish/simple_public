@@ -7,12 +7,24 @@
 
 namespace sim {
 
+//以主机为单位的连接对象集合
+//status标记主机状态(0正常，1异常)
+template<class T>
+class AbstractObjStore
+{
+public:
+    virtual void AddObj(SharedPtr<T> obj) = 0;
+    virtual SharedPtr<T> get() = 0;
+    virtual int status()=0;
+    virtual void set_status(int s)=0;
+};
+
 template<class T>
 class AbstractRouteHandler
 {
 public:
     virtual ~AbstractRouteHandler(){}
-    virtual T* handler() = 0;
+    virtual T* obj() = 0;
     virtual SharedPtr<T> get(){return NULL;}
     virtual void set_status(int s){}
     virtual int status(){return 0;}
@@ -25,24 +37,14 @@ public:
     RouteObj():handler_(NULL){}
     virtual ~RouteObj(){}
     void set_handler(SharedPtr<AbstractRouteHandler<T> > h){handler_ = h;}
-    T* operator -> (){return handler_->handler();}
+    SharedPtr<AbstractRouteHandler<T>> handler(){return handler_;}
+    T* operator -> (){return handler_->obj();}
     SharedPtr<T> get (){return handler_->get();}
-    operator const bool () {return handler_!=NULL && handler_->handler()!=NULL;}
+    operator const bool () {return handler_!=NULL && handler_->obj()!=NULL;}
     int status(){return handler_->status();}
     void set_status(int s){handler_->set_status(s);}
 private:
     SharedPtr<AbstractRouteHandler<T> > handler_;
-};
-
-//以主机为单位的连接对象集合
-template<class T>
-class AbstractObjStore
-{
-public:
-    virtual void AddObj(SharedPtr<T> obj) = 0;
-    virtual SharedPtr<T> get() = 0;
-    virtual int status()=0;
-    virtual void set_status(int s)=0;
 };
 
 template<class KEY, class OBJ>
