@@ -61,7 +61,6 @@ void MysqlRoute::Start(MysqlInfoManager *pinfo)
         SharedPtr<AbstractObjMaster<SimSql>> os;
         if (!is_pool_) os.reset(new SimConnObjMaster<SimSql>);
         else os.reset(new SimConnPoolObjMaster<SimSql>);
-        os->set_host_obj(SharedPtr<SimSql>(new SimSql(*sit)));
         master_map[*sit] = os;
 
         for (int i=0; i<copy_num_; ++i)

@@ -60,7 +60,6 @@ void RedisRoute::Start(RedisInfoManager *pinfo)
         SharedPtr<AbstractObjMaster<SimRedis>> os;
         if (!is_pool_) os.reset(new SimConnObjMaster<SimRedis>);
         else os.reset(new SimConnPoolObjMaster<SimRedis>);
-        os->set_host_obj(SharedPtr<SimRedis>(new SimRedis(*sit)));
         master_map[*sit] = os;
         for (int i=0; i<copy_num_; ++i)
             os->AddObj(SharedPtr<SimRedis>(new SimRedis(*sit)));

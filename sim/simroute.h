@@ -50,7 +50,6 @@ public:
     SimRouteHandler(AbstractObjMaster<T>* p)
         :pool_(p), obj_(p->get()){}
     ~SimRouteHandler(){if (obj_) pool_->AddObj(obj_);}
-    AbstractObjMaster<T>* master(){return pool_;}
     T* obj()
     {
         return obj_.get();

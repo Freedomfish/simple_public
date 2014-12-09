@@ -10,12 +10,12 @@ using namespace sim;
 
 #define TEST "test"
 
-void AddTimerCheckTask(AbstractObjMaster<SimSql>* m)
+void AddTimerCheckTask(SharedPtr<AbstractRouteHandler<SimSql>> m)
 {
     //定时检测，用户自己实用定时器即可
     if (0 != m->status())
     {
-        if (m->host_obj()->Ping())
+        if (m->obj()->Ping())
             m->set_status(0);
     }
 }
@@ -54,8 +54,8 @@ public:
             //如果是连接错误，则将该主机禁用
             if (obj->errcode()>=1158 || obj->errcode()<=1161)
             {
-                obj.master()->set_status(1);
-                AddTimerCheckTask(obj.master());
+                obj.handler()->set_status(1);
+                AddTimerCheckTask(obj.handler());
             }
             cout<<"errmsg="<<obj->errmsg()<<endl;
         }
