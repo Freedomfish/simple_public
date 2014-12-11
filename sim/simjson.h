@@ -25,7 +25,7 @@ public:
     SimJson():m_type(SIMJSON_EMPTY){}
     SimJson(SimJsonNodeType t);
     //is_transed标记是否转移，如果为false则表示需要转译
-    SimJson(const std::string& key, const std::string& value, bool is_transed = true);
+    SimJson(const std::string& key, const std::string& value, bool is_transed = false);
     SimJson(const std::string& key, const int value);
     
     SimJson(const std::string& key, const SimJson& value);
@@ -38,11 +38,11 @@ public:
     size_t capacity(void){return m_str.capacity();}
     void clear(void);
     template<typename T>
-    int push_back(const std::string& key, const T& val, bool is_transed = true)    
+    int push_back(const std::string& key, const T& val, bool is_transed = false)    
     {
         return push_back(SimJson(key, val));
     }
-    int push_back(const std::string& key, const std::string& val, bool is_transed = true)
+    int push_back(const std::string& key, const std::string& val, bool is_transed = false)
     {
         return push_back(SimJson(key, val, is_transed));
     }
