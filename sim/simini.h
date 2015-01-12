@@ -37,6 +37,10 @@ public:
     int GetStringVal(const std::string& sess,
             const std::string& key,
             std::string& val) const;
+    void AddValue(const std::string& sess,
+                      const std::string& key,
+                      const std::string& val);
+    std::string ToString();
 public:
     void test();
 private:
