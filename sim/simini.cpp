@@ -19,7 +19,6 @@ SimIni::~SimIni()
 
 int SimIni::LoadFile(const std::string& file)
 {
-    file_ = file;
     ifstream fi(file);
     if (!fi.is_open())
         return 2;

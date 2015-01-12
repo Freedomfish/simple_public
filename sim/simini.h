@@ -44,7 +44,6 @@ public:
 public:
     void test();
 protected:
-    std::string file_;
 private:
     bool m_is_loaded;
     sess_map m_sess_map;
