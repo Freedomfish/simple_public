@@ -15,7 +15,7 @@ public:
     ~SimIni();
     inline bool is_loaded(){return m_is_loaded;}
     inline void clear(){m_sess_map.clear();}
-    int LoadFile(const char* file);
+    int LoadFile(const std::string& file);
     const std::string& GetStringVal(
             const std::string& sess,
             const std::string& key) const;
@@ -43,6 +43,8 @@ public:
     std::string ToString();
 public:
     void test();
+protected:
+    std::string file_;
 private:
     bool m_is_loaded;
     sess_map m_sess_map;
