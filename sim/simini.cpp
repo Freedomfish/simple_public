@@ -17,8 +17,10 @@ SimIni::~SimIni()
 
 }
 
-int SimIni::LoadFile(const std::string& file)
+int SimIni::LoadFile(const char* file)
 {
+    if (NULL == file)
+        return 1;
     ifstream fi(file);
     if (!fi.is_open())
         return 2;
@@ -172,27 +174,6 @@ std::map<std::string, std::string> SimIni::GetSession(
         return m;
     m.insert(sit->second.begin(), sit->second.end());
     return m;
-}
-
-void SimIni::AddValue(const std::string& sess,
-                      const std::string& key,
-                      const std::string& val)
-{
-    m_sess_map[sess][key] = val;
-}
-
-std::string SimIni::ToString()
-{
-    string s;
-    sess_map::iterator sit;
-    key_val_map::iterator kit;
-    for (sit=m_sess_map.begin(); sit!=m_sess_map.end(); ++sit)
-    {
-        s += "[" + sit->first + "]\n";
-        for (kit=sit->second.begin(); kit!=sit->second.end(); ++kit)
-        s += kit->first + "=" + kit->second + "\n";
-    }
-    return s;
 }
 
 void SimIni::test()

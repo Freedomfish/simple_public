@@ -53,14 +53,14 @@ void RedisRoute::Start(RedisInfoManager *pinfo)
 {
     RedisInfoUtil* infos = (RedisInfoUtil*)pinfo->Infos();
     RedisInfoSet::iterator sit;
-    std::map<RedisInfo, SharedPtr<AbstractObjMaster<SimRedis>>> master_map;
+    std::map<RedisInfo, SharedPtr<AbstractObjStore<SimRedis>>> obj_map;
     //根据info生成对象
     for (sit=infos->infos.begin(); sit!=infos->infos.end(); ++sit)
     {
-        SharedPtr<AbstractObjMaster<SimRedis>> os;
-        if (!is_pool_) os.reset(new SimConnObjMaster<SimRedis>);
-        else os.reset(new SimConnPoolObjMaster<SimRedis>);
-        master_map[*sit] = os;
+        SharedPtr<AbstractObjStore<SimRedis>> os;
+        if (!is_pool_) os.reset(new SimConnObjStore<SimRedis>);
+        else os.reset(new SimConnPoolObjStore<SimRedis>);
+        obj_map[*sit] = os;
         for (int i=0; i<copy_num_; ++i)
             os->AddObj(SharedPtr<SimRedis>(new SimRedis(*sit)));
     }
@@ -75,7 +75,7 @@ void RedisRoute::Start(RedisInfoManager *pinfo)
         {
             for (sit=it->second.begin(); sit!=it->second.end(); ++sit)
              {
-                ptr->AddMaster(it->first, master_map[*sit]);
+                ptr->AddObj(it->first, obj_map[*sit]);
              }
         }
     }

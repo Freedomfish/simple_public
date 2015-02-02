@@ -15,10 +15,15 @@ public:
     SimLockPool(){m_max_size = 1024;}
     inline void set_max_size(size_t n){m_max_size = n;};
     size_t max_size() const {return m_max_size;};
-    size_t size() const 
+    size_t size()
     {
         ScopeLock lock_(m_mtx); 
         return pool_.size();
+    }
+    bool empty()
+    {
+        ScopeLock lock_(m_mtx); 
+        return pool_.empty();
     }
     void clear(void (*func)(SimLockPool&)=NULL);
     int push_back(T t);
@@ -45,8 +50,8 @@ inline T SimLockPool<T>::get(void)
 {
     ScopeLock lock_(m_mtx);
     if (pool_.empty()) return (T)0;
-    T t1 = pool_.back();
-    pool_.pop_back();
+    T t1 = pool_.front();
+    pool_.pop_front();
     return t1;
 }
 template<typename T>

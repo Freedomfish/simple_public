@@ -19,6 +19,13 @@ std::string StrToLow(char* s, const size_t len);
 std::string StrToUp(char* s, const size_t len);
 std::string url_decode(const std::string& path);
 
+inline int strnfind(const std::string& s, char c, int n, int pos=0)
+{
+	pos = s.find(c, pos);
+	if (n <= 1) return pos;
+    return strnfind(s, c, --n, pos+1);
+}
+
 int split(const std::string &src, const char ch, std::vector<std::string> &dest);
 
 template<typename T>

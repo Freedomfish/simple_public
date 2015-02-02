@@ -1,8 +1,21 @@
 #ifndef UTIL_TOOL_H
 #define UTIL_TOOL_H
-#include <sys/time.h>
+//#include <sys/time.h>
+#include <time.h>
 
 namespace sim {
+
+#define MIN 60
+#define HOUR 3600
+#define DAY 86400
+
+inline int get_day_sec(time_t ti)
+{
+    struct tm* t = localtime(&ti);
+    int offset = t->tm_sec + t->tm_min*MIN + t->tm_hour*HOUR;
+    return ti - offset;
+}
+
 class SimTimeGet
 {
 public:

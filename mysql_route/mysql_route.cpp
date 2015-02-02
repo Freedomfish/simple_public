@@ -54,14 +54,14 @@ void MysqlRoute::Start(MysqlInfoManager *pinfo)
 {
     MysqlInfoUtil* infos = (MysqlInfoUtil*)pinfo->Infos();
     MysqlInfoSet::iterator sit;
-    std::map<MysqlInfo, SharedPtr<AbstractObjMaster<SimSql>>> master_map;
+    std::map<MysqlInfo, SharedPtr<AbstractObjStore<SimSql>>> obj_map;
     //根据info生成对象
     for (sit=infos->infos.begin(); sit!=infos->infos.end(); ++sit)
     {
-        SharedPtr<AbstractObjMaster<SimSql>> os;
-        if (!is_pool_) os.reset(new SimConnObjMaster<SimSql>);
-        else os.reset(new SimConnPoolObjMaster<SimSql>);
-        master_map[*sit] = os;
+        SharedPtr<AbstractObjStore<SimSql>> os;
+        if (!is_pool_) os.reset(new SimConnObjStore<SimSql>);
+        else os.reset(new SimConnPoolObjStore<SimSql>);
+        obj_map[*sit] = os;
 
         for (int i=0; i<copy_num_; ++i)
             os->AddObj(SharedPtr<SimSql>(new SimSql(*sit)));
@@ -78,7 +78,7 @@ void MysqlRoute::Start(MysqlInfoManager *pinfo)
             for (it=mit->second[i].begin(); it!=mit->second[i].end(); ++it)
             {
                 for (sit=it->second.begin(); sit!=it->second.end(); ++sit)
-                    ptr->AddMaster(it->first, master_map[*sit]);
+                    ptr->AddObj(it->first, obj_map[*sit]);
             }
         }
     }
