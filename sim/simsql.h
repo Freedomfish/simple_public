@@ -143,20 +143,22 @@ public:
     {
         if (res) mysql_free_result(res);
     }
-    static inline const std::string Escape(const std::string& str) 
+    static inline std::string Escape(const std::string& str) 
     {
-        static const int tolen=1024*1024;
-        char to[tolen]={0};
-        size_t len = mysql_escape_string(to, str.c_str(), str.length());
-        return std::string(to, len);
+        std::string to;
+        to.resize(str.length()*2 + 1);
+        size_t len = mysql_escape_string(&to[0], str.c_str(), str.length());
+        to.resize(len);
+        return to;
     }
-    inline const std::string RealEscape(const std::string& str)
+    inline std::string RealEscape(const std::string& str)
     {
         if (!is_connected_ && Update()) return "";
-        static const int tolen=1024*1024;
-        char to[tolen]={0};
-        size_t len = mysql_real_escape_string(&sql_, to, str.c_str(), str.length());
-        return std::string(to, len);
+        std::string to;
+        to.resize(str.length()*2 + 1);
+        size_t len = mysql_real_escape_string(&sql_, &to[0], str.c_str(), str.length());
+        to.resize(len);
+        return to;
     }
 private:
     bool is_connected_;
