@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include <mysql/mysql.h>
+#include <simsql/mysql.h>
 
 namespace sim
 {

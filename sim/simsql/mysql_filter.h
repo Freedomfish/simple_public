@@ -1,8 +1,6 @@
 #ifndef MYSQL_FILTER_H
 #define MYSQL_FILTER_H
-#include <sim/mysql/filter_template.h>
-#include <stdint.h>
-#include <string>
+#include <simsql/filter_template.h>
 namespace sim {
 
 namespace mysql {

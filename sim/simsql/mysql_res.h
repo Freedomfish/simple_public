@@ -1,7 +1,7 @@
 #ifndef SIMSQLRES_H
 #define SIMSQLRES_H
 
-#include <mysql/mysql.h>
+#include <simsql/mysql.h>
 
 namespace sim
 {
