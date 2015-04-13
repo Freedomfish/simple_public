@@ -10,7 +10,7 @@ namespace sim
 
 #define MAX_INT_LENGH = 21
 
-inline std::string AoStr(uint64_t i)
+inline std::string AtoStr(uint64_t i)
 {
     char data_[MAX_INT_LENGH]={0};
     sprintf(data, "%llu", i);
