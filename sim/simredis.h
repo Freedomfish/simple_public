@@ -39,6 +39,7 @@ public:
     operator const bool (){return reply_!=NULL;}
     void Free(void){
         if (reply_) freeReplyObject(reply_);
+        reply_ = NULL;
     }
 private:
     redisReply* reply_;
