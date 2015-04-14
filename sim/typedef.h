@@ -1,6 +1,9 @@
 #ifndef SIM_TYPEDEF_H
 #define SIM_TYPEDEF_H
 
+
+#include <boost/function.hpp>
+#include <boost/weak_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread/locks.hpp>
 #include <boost/thread/mutex.hpp>
@@ -14,6 +17,7 @@
 #include <sstream>
 
 #define SharedPtr std::shared_ptr
+#define WeakPtr boost::weak_ptr
 
 namespace sim {
 
