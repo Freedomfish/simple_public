@@ -5,7 +5,7 @@
 #include <sim/typedef.h>
 namespace sim {
 typedef SharedPtr<SimRedis> SimRedisPtr;
-class RedisCache : public CacheInf
+class RedisCache : public Cache
 {
 public:
     RedisCache(const SimRedisPtr& p):redis_(p){}
