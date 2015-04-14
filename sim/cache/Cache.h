@@ -14,7 +14,7 @@ public:
     virtual void Remove(const std::string& key) = 0;
 
     virtual int errcode() = 0;
-    std::string errmsg() = 0;
+    virtual std::string errmsg() = 0;
 };
 
 typedef SharedPtr<Cache> CachePtr;
