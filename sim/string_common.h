@@ -67,9 +67,9 @@ std::string atostr(const T& t)
 inline std::string AtoStr(uint64_t i)
 {
 #ifndef MAX_INT_LENGH    
-#define MAX_INT_LENGH = 21
+#define MAX_INT_LENGH 21
 #endif
-    char data_[MAX_INT_LENGH]={0};
+    char data[MAX_INT_LENGH]={0};
     sprintf(data, "%llu", i);
     return data;
 }
