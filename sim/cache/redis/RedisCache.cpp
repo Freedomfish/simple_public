@@ -27,3 +27,10 @@ void RedisCache::Remove(const std::string& key)
     r.Free();
 }
 
+int64_t RedisCache::IncrBy(const std::string& key, int inc)
+{
+    SimRedisReply r = redis_->TryCommandArgv(command("INCRBY")(key)(inc));
+    if (r && r->type == REDIS_REPLY_INTEGER)
+        return r->integer;
+    return 0;
+}
