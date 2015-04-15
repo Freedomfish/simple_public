@@ -6,7 +6,7 @@ namespace sim{
 class ThreadSafeQueue
 {
 public:
-    ThreadSafeQueue(size_t maxQueueSize, size_t threadNum);
+    ThreadSafeQueue(size_t threadNum, size_t maxQueueSize=1024);
     void start();
     void stop();
     int push_back(size_t id, const ThreadHandlerPtr& h);

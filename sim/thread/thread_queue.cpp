@@ -11,7 +11,7 @@ ThreadQueue::ThreadQueue()
 {
 }
 
-int ThreadQueue::start()
+void ThreadQueue::start()
 {
     if (!is_started_)
     {
@@ -23,25 +23,23 @@ int ThreadQueue::start()
             work_tasks_.push_back(t);
         }
     }
-    return 0;
 }
 
-int ThreadQueue::stop()
+void ThreadQueue::stop()
 {
     if (!is_started_)
-        return 0;
+        return ;
     is_started_ = false;
     cond_.notify_all();
     std::for_each(work_tasks_.begin(), work_tasks_.end(), 
         boost::bind(&SimThread::join, _1));
-    return 0;
 }
 
-int ThreadQueue::push_back(ThreadHandlerPtr bp)
+int ThreadQueue::push_back(const ThreadHandlerPtr& bp)
 {
     ScopeLock lock(mtx_);
     if (size_ < max_size_ && ++size_)
-        deq_.push_back(bp);
+        deq_.push_back(ThreadHandlerPtr(bp));
     else
         return 1;
     cond_.notify_one();

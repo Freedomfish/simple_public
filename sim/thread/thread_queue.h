@@ -17,7 +17,7 @@ class ThreadQueue
 {
 public:
     ThreadQueue();
-    int start();
+    void start();
     void stop();
     int push_back(const ThreadHandlerPtr& ptr);
 

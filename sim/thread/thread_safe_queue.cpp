@@ -7,8 +7,8 @@ ThreadSafeQueue::ThreadSafeQueue(size_t maxQueueSize, size_t threadNum)
     for (size_t i=0; i<threadNum; ++i)
     {
         ThreadQueuePtr tq(new ThreadQueue());
-        tq.set_maxsize(maxQueueSize);
-        tq.set_threadcount(1);
+        tq->set_maxsize(maxQueueSize);
+        tq->set_threadcount(1);
         queues_.push_back(tq);
     }
     threadNum_ = threadNum;
@@ -18,7 +18,7 @@ void ThreadSafeQueue::start()
 {
     std::vector<ThreadQueuePtr>::iterator it;
     for (it=queues_.begin(); it!=queues_.end(); ++it)
-        it->start();
+        (*it)->start();
 }
 
 void ThreadSafeQueue::stop()
