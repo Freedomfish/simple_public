@@ -8,16 +8,25 @@
 #include <boost/thread/locks.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/shared_mutex.hpp>
+#include <boost/thread/condition.hpp>
+#include <boost/thread/detail/thread.hpp>
+#include <boost/thread/thread_time.hpp>
 
 #include <boost/uuid/uuid.hpp>            // uuid class
 #include <boost/uuid/uuid_generators.hpp> // generators
 #include <boost/uuid/uuid_io.hpp>         // streaming operators etc.
+
+#include <boost/bind.hpp>
+#include <boost/function.hpp>
 
 #include <memory>
 #include <sstream>
 
 #define SharedPtr std::shared_ptr
 #define WeakPtr boost::weak_ptr
+#define SimBind boost::bind
+#define SimFunction boost::function
+#define SimThread boost::thread
 
 namespace sim {
 
@@ -32,6 +41,7 @@ inline std::string NewUuid()
 //#define SharedPtr boost::shared_ptr
 typedef boost::mutex Mutex;
 typedef boost::unique_lock<Mutex> ScopeLock;
+typedef boost::condition_variable ConditionVar;
 
 typedef boost::shared_mutex            SharedMutex;  
 typedef boost::unique_lock<SharedMutex>   WriteLock;  
