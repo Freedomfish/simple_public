@@ -1,7 +1,7 @@
 #include <sim/thread/thread_safe_queue.h>
 using namespace sim;
 
-ThreadSafeQueue::ThreadSafeQueue(size_t maxQueueSize, size_t threadNum)
+ThreadSafeQueue::ThreadSafeQueue(size_t threadNum, size_t maxQueueSize)
 {
     queues_.reserve(threadNum);
     for (size_t i=0; i<threadNum; ++i)
